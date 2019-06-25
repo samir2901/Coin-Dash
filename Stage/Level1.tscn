@@ -1,0 +1,111 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Stage/Level1.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/Coin.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/grass.png" type="Texture" id=3]
+[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Stage/HUD.tscn" type="PackedScene" id=5]
+[ext_resource path="res://assets/audio/Coin.wav" type="AudioStream" id=6]
+[ext_resource path="res://assets/audio/Hit.wav" type="AudioStream" id=7]
+[ext_resource path="res://assets/audio/Level.wav" type="AudioStream" id=8]
+[ext_resource path="res://assets/cactus.png" type="Texture" id=9]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 26.0576, 42.9267 )
+
+[node name="World" type="Node"]
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_horizontal_guides_": [ 41.9375 ],
+"_edit_vertical_guides_": [ 32.9425, 408.0 ]
+}
+coin = ExtResource( 2 )
+playtime = 30
+
+[node name="Background" type="TextureRect" parent="."]
+margin_right = 448.0
+margin_bottom = 704.0
+texture = ExtResource( 3 )
+stretch_mode = 2
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Player" parent="." instance=ExtResource( 4 )]
+position = Vector2( 146.336, 105.982 )
+
+[node name="CoinContainer" type="Node" parent="."]
+
+[node name="GameTimer" type="Timer" parent="."]
+
+[node name="PlayerStartPos" type="Position2D" parent="."]
+position = Vector2( 224, 352 )
+
+[node name="HUD" parent="." instance=ExtResource( 5 )]
+
+[node name="CoinPickUp" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
+
+[node name="GameOver" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 7 )
+
+[node name="LevelUp" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+
+[node name="Cacti" type="Node2D" parent="."]
+
+[node name="Cactus1" type="Area2D" parent="Cacti" groups=[
+"Obstacle",
+]]
+editor/display_folded = true
+position = Vector2( 389.334, 470.507 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="Cacti/Cactus1"]
+scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 9 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Cacti/Cactus1"]
+position = Vector2( -0.307343, 2.76624 )
+shape = SubResource( 1 )
+
+[node name="Cactus2" type="Area2D" parent="Cacti" groups=[
+"Obstacle",
+]]
+editor/display_folded = true
+position = Vector2( 72.8783, 196.615 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="Cacti/Cactus2"]
+scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 9 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Cacti/Cactus2"]
+position = Vector2( -0.307343, 2.76624 )
+shape = SubResource( 1 )
+
+[node name="Cactus3" type="Area2D" parent="Cacti" groups=[
+"Obstacle",
+]]
+editor/display_folded = true
+position = Vector2( 83.982, 583.394 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="Cacti/Cactus3"]
+scale = Vector2( 0.15, 0.15 )
+texture = ExtResource( 9 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Cacti/Cactus3"]
+position = Vector2( -0.307343, 2.76624 )
+shape = SubResource( 1 )
+
+[connection signal="hurt" from="Player" to="." method="_on_Player_hurt"]
+[connection signal="pickup" from="Player" to="." method="_on_Player_pickup"]
+[connection signal="timeout" from="GameTimer" to="." method="_on_GameTimer_timeout"]
+[connection signal="start_game" from="HUD" to="." method="newgame"]
